@@ -6,6 +6,7 @@ import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,9 +28,10 @@ public class TaskController {
     }
 
     @GetMapping(value = "{taskId}/")
-    public TaskDto getTask(@PathVariable Long taskId) {
-        Task task = service.getTask(taskId);
-        return taskMapper.mapToTaskDto(task);
+    public TaskDto getTask(@PathVariable Long taskId) throws TaskNotFoundException {
+        return taskMapper.mapToTaskDto(
+                service.getTask(taskId).orElseThrow(TaskNotFoundException::new)
+        );
     }
 
     @DeleteMapping
@@ -42,8 +44,10 @@ public class TaskController {
         return new TaskDto(1L, "Edited test title", "Test content");
     }
 
-    @PostMapping
-    public void createTask(TaskDto taskDto) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createTask(@RequestBody TaskDto taskDto) {
+    Task task = taskMapper.mapToTask(taskDto);
+    service.saveTask(task);
 
     }
 
