@@ -37,7 +37,6 @@ public class SimpleEmailService {
         if (isToCcPresent(mail)) {
             mailMessage.setCc(mail.getToCC());
         }
-        log.info(mailMessage.toString());
         return mailMessage;
     }
 
