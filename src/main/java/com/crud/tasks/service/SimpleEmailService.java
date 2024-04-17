@@ -41,7 +41,7 @@ public class SimpleEmailService {
         return mailMessage;
     }
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail) {
+    public MimeMessagePreparator createMimeMessage(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
@@ -49,6 +49,7 @@ public class SimpleEmailService {
             messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
         };
     }
+
 
     private static boolean isToCcPresent(Mail mail) {
         return Optional.ofNullable(mail.getToCC()).isPresent();

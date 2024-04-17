@@ -34,4 +34,8 @@ public class DbService {
             throw new TaskNotFoundException();
         }
     }
+
+    public long countTasks() {
+        return repository.count();
+    }
 }

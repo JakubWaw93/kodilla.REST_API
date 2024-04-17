@@ -8,7 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 
+import javax.mail.internet.MimeMessage;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,14 +40,16 @@ class SimpleEmailServiceTest {
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setTo(mail.getMailTo());
 
+
         if (Optional.ofNullable(mail.getToCC()).isPresent()) {
             mailMessage.setCc(mail.getToCC());
         }
 
         //When
-        service.send(mail);
+        MimeMessagePreparator message = service.createMimeMessage(mail);
+        javaMailSender.send(message);
 
         //Then
-        verify(javaMailSender, times(1)).send(mailMessage);
+        verify(javaMailSender, times(1)).send(message);
     }
 }
