@@ -90,4 +90,5 @@ class TrelloControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("Test")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.shortUrl", Matchers.is("http://test.com")));
     }
+
 }
